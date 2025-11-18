@@ -4,6 +4,7 @@ import Product from "@/models/Product";
 import Warehouse from "@/models/Warehouse";
 import Inventory from "@/models/Inventory";
 import { mongoConnect } from "@/lib/mongoConnect";
+import { enableCors } from "@/middleware/enableCors";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   await mongoConnect();
@@ -48,4 +49,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default handler;
+export default enableCors(handler);
