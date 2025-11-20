@@ -1,17 +1,17 @@
-// @/models/Customer.ts
+// @/models/BranchManager.ts
 import mongoose, { Document, Schema } from "mongoose";
 
-export interface ICustomer extends Document {
+export interface IBranchManager extends Document {
   nama: string;
   email: string;
   password: string;
-  alamat?: string;
+  cabangId: mongoose.Types.ObjectId;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-const CustomerSchema = new Schema<ICustomer>(
+const BranchManagerSchema = new Schema<IBranchManager>(
   {
     nama: { type: String, required: true, trim: true },
     email: {
@@ -22,11 +22,17 @@ const CustomerSchema = new Schema<ICustomer>(
       trim: true,
     },
     password: { type: String, required: true },
-    alamat: { type: String, default: "" },
+
+    cabangId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Branch",
+      required: true,
+    },
+
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true },
 );
 
-export default mongoose.models.Customer ||
-  mongoose.model<ICustomer>("Customer", CustomerSchema);
+export default mongoose.models.BranchManager ||
+  mongoose.model<IBranchManager>("BranchManager", BranchManagerSchema);

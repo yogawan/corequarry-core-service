@@ -47,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
         {menu.path && !menu.subMenu ? (
           <Link
             href={menu.path}
-            className={`flex items-center justify-between w-full px-3 py-2 text-xs text-left rounded-lg transition-all duration-200 group ${
+            className={`flex items-center justify-between w-full px-3 py-2 text-xl text-left rounded-lg transition-all duration-200 group ${
               isActive
                 ? "bg-primary text-white"
                 : "hover:bg-gray-200 text-gray-700"
@@ -64,7 +64,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
           </Link>
         ) : (
           <button
-            className={`flex items-center justify-between w-full px-3 py-2 text-xs text-left rounded-lg transition-all duration-200 group ${
+            className={`flex items-center justify-between w-full px-3 py-2 text-xl text-left rounded-lg transition-all duration-200 group ${
               isActive
                 ? "bg-primary text-white"
                 : "hover:bg-gray-200 text-gray-700"
@@ -148,7 +148,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
             width={128}
             height={128}
           />
-          <p className="text-xs text-gray-500 mt-1">PT. Mekar Jaya Sejahtera (MekarJS)</p>
+          <p className="text-xs text-gray-500 mt-1">
+            PT. Mekar Jaya Sejahtera (MekarJS)
+          </p>
         </div>
         {/* Mobile close button */}
         <button

@@ -1,17 +1,16 @@
-// @/models/Customer.ts
+// @/models/Owner.ts
 import mongoose, { Document, Schema } from "mongoose";
 
-export interface ICustomer extends Document {
+export interface IOwner extends Document {
   nama: string;
   email: string;
   password: string;
-  alamat?: string;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-const CustomerSchema = new Schema<ICustomer>(
+const OwnerSchema = new Schema<IOwner>(
   {
     nama: { type: String, required: true, trim: true },
     email: {
@@ -22,11 +21,10 @@ const CustomerSchema = new Schema<ICustomer>(
       trim: true,
     },
     password: { type: String, required: true },
-    alamat: { type: String, default: "" },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true },
 );
 
-export default mongoose.models.Customer ||
-  mongoose.model<ICustomer>("Customer", CustomerSchema);
+export default mongoose.models.Owner ||
+  mongoose.model<IOwner>("Owner", OwnerSchema);
