@@ -1,5 +1,6 @@
-// @/pages/api/product/[id]/index.ts
+// @/pages/api/branch-manager/product/[id]/index.ts
 import type { NextApiRequest, NextApiResponse } from "next";
+import "@/models/Branch"
 import Product from "@/models/Product";
 import { mongoConnect } from "@/lib/mongoConnect";
 import { enableCors } from "@/middleware/enableCors";
@@ -11,7 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case "GET":
       try {
-        const product = await Product.findById(id);
+        const product = await Product.findById(id).populate('cabangId');
         if (!product)
           return res
             .status(404)

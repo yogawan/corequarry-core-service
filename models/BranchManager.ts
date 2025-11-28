@@ -22,13 +22,11 @@ const BranchManagerSchema = new Schema<IBranchManager>(
       trim: true,
     },
     password: { type: String, required: true },
-
     cabangId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Branch",
       required: true,
     },
-
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true },
