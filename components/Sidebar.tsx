@@ -47,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
         {menu.path && !menu.subMenu ? (
           <Link
             href={menu.path}
-            className={`flex items-center justify-between w-full px-3 py-2 text-xl text-left rounded-lg transition-all duration-200 group ${
+            className={`flex items-center justify-between w-full px-3 py-2 text-xs text-left rounded-lg transition-all duration-200 group ${
               isActive
                 ? "bg-primary text-white"
                 : "hover:bg-gray-200 text-gray-700"
@@ -59,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                   isActive ? "text-white" : "text-primary"
                 }`}
               />
-              <span className="font-medium">{menu.title}</span>
+              <span className="text-xs font-medium">{menu.title}</span>
             </div>
           </Link>
         ) : (
@@ -77,7 +77,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                   isActive ? "text-white" : "text-primary"
                 }`}
               />
-              <span className="font-medium">{menu.title}</span>
+              <span className="text-xs font-medium">{menu.title}</span>
             </div>
             {menu.subMenu && (
               <div
