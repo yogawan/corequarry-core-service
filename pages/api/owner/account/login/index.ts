@@ -3,8 +3,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import Owner from "@/models/Owner";
 import { mongoConnect } from "@/lib/mongoConnect";
 import { comparePassword, generateToken } from "@/lib/auth";
+import { enableCors } from "@/middleware/enableCors";
 
-export default async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
@@ -46,3 +47,5 @@ export default async function handler(
     return res.status(500).json({ message: "Server error" });
   }
 }
+
+export default enableCors(handler);
