@@ -1,6 +1,21 @@
 // @/lib/mongoConnect.ts
 import mongoose from "mongoose";
 
+// Import all models to ensure they are registered
+import "@/models/Branch";
+import "@/models/BranchManager";
+import "@/models/Customer";
+import "@/models/Inventory";
+import "@/models/InventoryForecast";
+import "@/models/InventoryMovement";
+import "@/models/Otp";
+import "@/models/Owner";
+import "@/models/Product";
+import "@/models/Purchase";
+import "@/models/Sale";
+import "@/models/Supplier";
+import "@/models/Warehouse";
+
 const MONGODB_URI = process.env.MONGODB_URI as string;
 
 if (!MONGODB_URI) {
