@@ -2,11 +2,11 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface ISupplier extends Document {
-  name: string;
+  namaPerusahaan: string;
   email?: string;
-  phone?: string;
-  address?: string;
-  materialsSupplied?: string[];
+  kontak?: string;
+  alamatPerusahaan?: string;
+  materialYangDiSupply?: string[];
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -14,11 +14,11 @@ export interface ISupplier extends Document {
 
 const SupplierSchema: Schema<ISupplier> = new Schema(
   {
-    name: { type: String, required: true, trim: true },
+    namaPerusahaan: { type: String, required: true, trim: true },
     email: { type: String, trim: true, lowercase: true },
-    phone: { type: String, trim: true },
-    address: { type: String, trim: true },
-    materialsSupplied: { type: [String], default: [] },
+    kontak: { type: String, trim: true },
+    alamatPerusahaan: { type: String, trim: true },
+    materialYangDiSupply: { type: [String], default: [] },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true },
