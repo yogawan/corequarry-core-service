@@ -3,6 +3,7 @@ import BranchManager from "@/models/BranchManager";
 import Branch from "@/models/Branch";
 import { mongoConnect } from "@/lib/mongoConnect";
 import { comparePassword, generateToken } from "@/lib/auth";
+import { enableCors } from "@/middleware/enableCors";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -57,4 +58,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default handler;
+export default enableCors(handler);

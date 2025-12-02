@@ -4,11 +4,9 @@ import jwt from "jsonwebtoken";
 import BranchManager from "@/models/BranchManager";
 import Branch from "@/models/Branch";
 import { mongoConnect } from "@/lib/mongoConnect";
+import { enableCors } from "@/middleware/enableCors";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
     return res.status(405).json({ message: "Method not allowed" });
   }
@@ -28,9 +26,13 @@ export default async function handler(
       return res.status(403).json({ message: "Akses ditolak" });
     }
 
-    const branchManager = await BranchManager.findById(decoded.id).select("-password");
+    const branchManager = await BranchManager.findById(decoded.id).select(
+      "-password",
+    );
     if (!branchManager) {
-      return res.status(404).json({ message: "Branch Manager tidak ditemukan" });
+      return res
+        .status(404)
+        .json({ message: "Branch Manager tidak ditemukan" });
     }
 
     const branch = await Branch.findById(branchManager.cabangId);
@@ -47,3 +49,5 @@ export default async function handler(
     return res.status(500).json({ message: "Server error" });
   }
 }
+
+export default enableCors(handler);
