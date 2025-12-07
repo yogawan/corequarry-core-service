@@ -13,6 +13,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       try {
         const notification = req.body;
 
+        console.log("Webhook notification received:", JSON.stringify(notification, null, 2));
+
         // Verifikasi signature hash dari Midtrans
         const serverKey = process.env.MIDTRANS_SERVER_KEY as string;
         const orderId = notification.order_id;
@@ -25,8 +27,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           .update(`${orderId}${statusCode}${grossAmount}${serverKey}`)
           .digest("hex");
 
+        console.log("Signature verification:", {
+          received: notification.signature_key,
+          calculated: signatureKey,
+          match: signatureKey === notification.signature_key,
+        });
+
         // Verifikasi signature
         if (signatureKey !== notification.signature_key) {
+          console.error("Invalid signature detected");
           return res.status(401).json({
             success: false,
             message: "Invalid signature",
@@ -36,6 +45,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         // Cari transaksi berdasarkan order_id
         const transaction = await Transaction.findOne({ orderId });
         if (!transaction) {
+          console.error(`Transaction not found for order_id: ${orderId}`);
           return res.status(404).json({
             success: false,
             message: "Transaction not found",
@@ -46,20 +56,24 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         const transactionStatus = notification.transaction_status;
         const fraudStatus = notification.fraud_status;
 
-        let paymentStatus = transaction.paymentStatus;
+        let paymentStatus: "pending" | "settlement" | "cancel" | "deny" | "expire" | "failure" = transaction.paymentStatus;
 
         if (transactionStatus === "capture") {
           if (fraudStatus === "accept") {
             paymentStatus = "settlement";
+          } else {
+            paymentStatus = "failure";
           }
         } else if (transactionStatus === "settlement") {
           paymentStatus = "settlement";
-        } else if (
-          transactionStatus === "cancel" ||
-          transactionStatus === "deny" ||
-          transactionStatus === "expire"
-        ) {
-          paymentStatus = transactionStatus as any;
+        } else if (transactionStatus === "cancel") {
+          paymentStatus = "cancel";
+        } else if (transactionStatus === "deny") {
+          paymentStatus = "deny";
+        } else if (transactionStatus === "expire") {
+          paymentStatus = "expire";
+        } else if (transactionStatus === "failure") {
+          paymentStatus = "failure";
         } else if (transactionStatus === "pending") {
           paymentStatus = "pending";
         }
@@ -78,7 +92,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
         await transaction.save();
 
-        console.log(`Webhook received for order: ${orderId}, status: ${paymentStatus}`);
+        console.log(`Webhook processed successfully - Order: ${orderId}, Status: ${paymentStatus}`);
 
         return res.status(200).json({
           success: true,
