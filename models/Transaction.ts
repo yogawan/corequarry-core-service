@@ -8,12 +8,25 @@ export interface ITransaction extends Document {
   quantity: number;
   grossAmount: number;
   paymentUrl?: string;
-  paymentStatus: "pending" | "settlement" | "cancel" | "deny" | "expire" | "failure";
+  paymentStatus:
+    | "pending"
+    | "settlement"
+    | "cancel"
+    | "deny"
+    | "expire"
+    | "failure";
   transactionStatus?: string;
   paymentType?: string;
   transactionId?: string;
   transactionTime?: Date;
   settlementTime?: Date;
+  orderStatus:
+    | "diproses"
+    | "sedang_loading"
+    | "dalam_perjalanan"
+    | "tiba_di_tujuan"
+    | "sedang_dibongkar"
+    | "selesai";
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -44,6 +57,19 @@ const TransactionSchema = new mongoose.Schema<ITransaction>(
     transactionId: { type: String },
     transactionTime: { type: Date },
     settlementTime: { type: Date },
+
+    orderStatus: {
+      type: String,
+      enum: [
+        "diproses",
+        "sedang_loading",
+        "dalam_perjalanan",
+        "tiba_di_tujuan",
+        "sedang_dibongkar",
+        "selesai",
+      ],
+      default: "diproses",
+    },
   },
   { timestamps: true }
 );

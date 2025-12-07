@@ -46,6 +46,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           quantity,
           grossAmount,
           paymentStatus: "pending",
+          orderStatus: "diproses",
         });
 
         // Setup Midtrans API
@@ -139,6 +140,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             orderId: transaction.orderId,
             paymentUrl: transaction.paymentUrl,
             grossAmount: transaction.grossAmount,
+            paymentStatus: transaction.paymentStatus,
+            orderStatus: transaction.orderStatus,
             product: {
               id: product._id,
               nama: product.nama,
