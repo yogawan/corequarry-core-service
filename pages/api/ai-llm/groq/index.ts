@@ -1,4 +1,4 @@
-// @/pages/api/owner/ai-llm/index.ts
+// @/pages/api/ai-llm/groq/index.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import Groq from "groq-sdk";
 import { mongoConnect } from "@/lib/mongoConnect";
@@ -7,10 +7,7 @@ import { verifyAuth } from "@/middleware/verifyAuth";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
@@ -45,7 +42,9 @@ async function handler(
       model: "llama-3.1-8b-instant",
     });
 
-    const answer = chatCompletion.choices[0]?.message?.content || "Maaf, tidak dapat menghasilkan jawaban.";
+    const answer =
+      chatCompletion.choices[0]?.message?.content ||
+      "Maaf, tidak dapat menghasilkan jawaban.";
 
     return res.status(200).json({
       status: "Sukses bertanya pada AI LLM MekarJS",
