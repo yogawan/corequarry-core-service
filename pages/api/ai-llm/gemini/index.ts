@@ -20,7 +20,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // User info sudah di-attach oleh verifyAuth
     const user = (req as any).user;
 
-    if (user.role !== "owner") {
+    if (user.role !== "owner" && user.role !== "branch-manager") {
       return res.status(403).json({ message: "Akses ditolak" });
     }
 
