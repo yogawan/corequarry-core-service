@@ -1,6 +1,5 @@
 // @/pages/index.tsx
 import { useState, useEffect } from "react";
-import Sidebar from "@/components/Sidebar";
 import Splash from "@/components/Splash";
 
 const HomePage = () => {
@@ -18,7 +17,7 @@ const HomePage = () => {
     return <Splash />;
   }
 
-  return <Sidebar />;
+  return <Splash />;
 };
 
 export default HomePage;
