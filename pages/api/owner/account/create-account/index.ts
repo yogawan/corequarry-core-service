@@ -4,6 +4,7 @@ import Owner from "@/models/Owner";
 import { mongoConnect } from "@/lib/mongoConnect";
 import { hashPassword } from "@/lib/auth";
 import { enableCors } from "@/middleware/enableCors";
+import { verifyAuth } from "@/middleware/verifyAuth";
 
 async function handler(
   req: NextApiRequest,
@@ -45,4 +46,4 @@ async function handler(
   }
 }
 
-export default enableCors(handler);
+export default enableCors(verifyAuth(handler));

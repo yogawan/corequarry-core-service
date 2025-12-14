@@ -4,6 +4,7 @@ import "@/models/Branch";
 import Employee from "@/models/Employee";
 import { mongoConnect } from "@/lib/mongoConnect";
 import { enableCors } from "@/middleware/enableCors";
+import { verifyAuth } from "@/middleware/verifyAuth";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
     await mongoConnect();
@@ -55,4 +56,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 }
 
-export default enableCors(handler);
+export default enableCors(verifyAuth(handler));

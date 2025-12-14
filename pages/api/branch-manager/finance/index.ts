@@ -8,6 +8,7 @@ import "@/models/Product";
 import "@/models/Supplier";
 import { mongoConnect } from "@/lib/mongoConnect";
 import { enableCors } from "@/middleware/enableCors";
+import { verifyAuth } from "@/middleware/verifyAuth";
 
 // ============================================
 // INTERFACES
@@ -470,4 +471,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 }
 
-export default enableCors(handler);
+export default enableCors(verifyAuth(handler));

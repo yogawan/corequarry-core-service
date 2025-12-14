@@ -1,10 +1,10 @@
 // @/pages/api/branch-manager/account/profile/index.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import jwt from "jsonwebtoken";
 import BranchManager from "@/models/BranchManager";
 import Branch from "@/models/Branch";
 import { mongoConnect } from "@/lib/mongoConnect";
 import { enableCors } from "@/middleware/enableCors";
+import { verifyAuth } from "@/middleware/verifyAuth";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
@@ -14,19 +14,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     await mongoConnect();
 
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "Token tidak ditemukan" });
-    }
+    // User info sudah di-attach oleh verifyAuth
+    const user = (req as any).user;
 
-    const token = authHeader.substring(7);
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
-
-    if (decoded.role !== "branch-manager") {
+    if (user.role !== "branch-manager") {
       return res.status(403).json({ message: "Akses ditolak" });
     }
 
-    const branchManager = await BranchManager.findById(decoded.id).select(
+    const branchManager = await BranchManager.findById(user.id).select(
       "-password",
     );
     if (!branchManager) {
@@ -50,4 +45,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default enableCors(handler);
+export default enableCors(verifyAuth(handler));

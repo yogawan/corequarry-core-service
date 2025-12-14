@@ -1,9 +1,9 @@
 // @/pages/api/owner/ai-llm/index.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import jwt from "jsonwebtoken";
 import Groq from "groq-sdk";
 import { mongoConnect } from "@/lib/mongoConnect";
 import { enableCors } from "@/middleware/enableCors";
+import { verifyAuth } from "@/middleware/verifyAuth";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -18,21 +18,16 @@ async function handler(
   try {
     await mongoConnect();
 
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "Token tidak ditemukan" });
-    }
+    // User info sudah di-attach oleh verifyAuth
+    const user = (req as any).user;
 
-    const token = authHeader.substring(7);
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
-
-    if (decoded.role !== "owner") {
+    if (user.role !== "owner") {
       return res.status(403).json({ message: "Akses ditolak" });
     }
 
-    const { askToCoreQuarry } = req.body;
+    const { askToMekarJSLLM } = req.body;
 
-    if (!askToCoreQuarry || typeof askToCoreQuarry !== "string") {
+    if (!askToMekarJSLLM || typeof askToMekarJSLLM !== "string") {
       return res.status(400).json({ message: "Pertanyaan wajib diisi" });
     }
 
@@ -44,7 +39,7 @@ async function handler(
         },
         {
           role: "user",
-          content: askToCoreQuarry,
+          content: askToMekarJSLLM,
         },
       ],
       model: "llama-3.1-8b-instant",
@@ -53,7 +48,7 @@ async function handler(
     const answer = chatCompletion.choices[0]?.message?.content || "Maaf, tidak dapat menghasilkan jawaban.";
 
     return res.status(200).json({
-      status: "Sukses bertanya pada AI LLM! CoreQuarry",
+      status: "Sukses bertanya pada AI LLM MekarJS",
       responseCoreQuarry: answer,
     });
   } catch (err) {
@@ -62,4 +57,4 @@ async function handler(
   }
 }
 
-export default enableCors(handler);
+export default enableCors(verifyAuth(handler));
