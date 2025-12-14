@@ -49,7 +49,7 @@ async function handler(
 
     return res.status(200).json({
       status: "Sukses bertanya pada AI LLM MekarJS",
-      responseCoreQuarry: answer,
+      responseMekarJSLLM: answer,
     });
   } catch (err) {
     console.error("AI LLM error:", err);
