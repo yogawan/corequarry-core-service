@@ -1,3 +1,5 @@
+![Preview Applicaion](https://res.cloudinary.com/dy4hqxkv1/image/upload/v1765672989/Screenshot_from_2025-12-14_07-41-06_gbr6hq.png)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
 ## Getting Started
@@ -12,6 +14,28 @@ yarn dev
 pnpm dev
 # or
 bun dev
+```
+
+.env Configuration
+
+```bash
+# MongoDB Connection
+MONGODB_URI=YOUR_MONGODB_URI
+
+# JWT Secret Key
+JWT_SECRET=YOUR_JWT_SECRET_KEY
+
+# Nodemailer
+EMAIL_USER=YOUR_EMAIL_PASSWORD
+EMAIL_PASS=YOUR_EMAIL_APP_PASSWORD
+
+# Google AI Studio
+GROQ_API_KEY=YOUR_GROQ_API_KEY
+
+# Midtrans Payment Gateway
+MIDTRANS_SERVER_KEY=YOUR_MIDTRANS_API_KEY
+MIDTRANS_IS_PRODUCTION=false
+
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
